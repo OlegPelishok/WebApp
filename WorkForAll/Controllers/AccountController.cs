@@ -78,21 +78,20 @@ namespace WorkForAll.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    AddErrors(result);
-                }
+                var user =  new User();
+                user.first_name = model.UserName;
+                user.password = model.Password;
+                user.e_mail = model.Email;
+                user.last_name = model.LastName;
+                user.first_name = model.FirstName;
+                user.type_id = model.Client_type;
+               
+                WebSQLEntities db = new WebSQLEntities();
+                db.User.Add(user);
+                db.SaveChanges();
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Index", "Home");
+       
         }
 
         //

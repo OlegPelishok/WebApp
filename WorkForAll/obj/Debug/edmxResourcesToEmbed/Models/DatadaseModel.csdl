@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebSQLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_name" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Services" Relationship="Self.FK_Services_Category" FromRole="Category" ToRole="Services" />
+  </EntityType>
+  <EntityType Name="Master_Services">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="service_id" Type="Int32" Nullable="false" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="price" Type="Decimal" Precision="19" Scale="4" />
+    <NavigationProperty Name="Services" Relationship="Self.FK_Master_Services_Services" FromRole="Master_Services" ToRole="Services" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Master_Services_User" FromRole="Master_Services" ToRole="User" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Master_Services" FromRole="Master_Services" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="order_id" />
+    </Key>
+    <Property Name="order_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="client_id" Type="Int32" Nullable="false" />
+    <Property Name="master_service" Type="Int32" Nullable="false" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Master_Services" Relationship="Self.FK_Orders_Master_Services" FromRole="Orders" ToRole="Master_Services" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Orders_User" FromRole="Orders" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Services">
+    <Key>
+      <PropertyRef Name="service_id" />
+    </Key>
+    <Property Name="service_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_id" Type="Int32" Nullable="false" />
+    <Property Name="service_name" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Services_Category" FromRole="Services" ToRole="Category" />
+    <NavigationProperty Name="Master_Services" Relationship="Self.FK_Master_Services_Services" FromRole="Services" ToRole="Master_Services" />
+  </EntityType>
+  <EntityType Name="Type">
+    <Key>
+      <PropertyRef Name="type_id" />
+    </Key>
+    <Property Name="type_id" Type="Int32" Nullable="false" />
+    <Property Name="type_name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_User_Type" FromRole="Type" ToRole="User" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="first_name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="last_name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="type_id" Type="Int32" Nullable="false" />
+    <Property Name="e_mail" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+    <Property Name="work_time" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Master_Services" Relationship="Self.FK_Master_Services_User" FromRole="User" ToRole="Master_Services" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_User" FromRole="User" ToRole="Orders" />
+    <NavigationProperty Name="Type" Relationship="Self.FK_User_Type" FromRole="User" ToRole="Type" />
+  </EntityType>
+  <Association Name="FK_Services_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Services" Type="Self.Services" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="Services">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Master_Services_Services">
+    <End Role="Services" Type="Self.Services" Multiplicity="1" />
+    <End Role="Master_Services" Type="Self.Master_Services" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Services">
+        <PropertyRef Name="service_id" />
+      </Principal>
+      <Dependent Role="Master_Services">
+        <PropertyRef Name="service_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Master_Services_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Master_Services" Type="Self.Master_Services" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Master_Services">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Master_Services">
+    <End Role="Master_Services" Type="Self.Master_Services" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Master_Services">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="master_service" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="client_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Type">
+    <End Role="Type" Type="Self.Type" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Type">
+        <PropertyRef Name="type_id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WebSQLEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Category" EntityType="Self.Category" />
+    <EntitySet Name="Master_Services" EntityType="Self.Master_Services" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" />
+    <EntitySet Name="Services" EntityType="Self.Services" />
+    <EntitySet Name="Type" EntityType="Self.Type" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="FK_Services_Category" Association="Self.FK_Services_Category">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Services" EntitySet="Services" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Master_Services_Services" Association="Self.FK_Master_Services_Services">
+      <End Role="Services" EntitySet="Services" />
+      <End Role="Master_Services" EntitySet="Master_Services" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Master_Services_User" Association="Self.FK_Master_Services_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Master_Services" EntitySet="Master_Services" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Master_Services" Association="Self.FK_Orders_Master_Services">
+      <End Role="Master_Services" EntitySet="Master_Services" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_User" Association="Self.FK_Orders_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Type" Association="Self.FK_User_Type">
+      <End Role="Type" EntitySet="Type" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

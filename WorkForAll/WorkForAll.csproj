@@ -43,6 +43,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -164,7 +166,42 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>DatadaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DatadaseModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DatadaseModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DatadaseModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DatadaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DatadaseModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DatadaseModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Master_Services.cs">
+      <DependentUpon>DatadaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Orders.cs">
+      <DependentUpon>DatadaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\Services.cs">
+      <DependentUpon>DatadaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Type.cs">
+      <DependentUpon>DatadaseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>DatadaseModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -177,6 +214,23 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\DatadaseModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DatadaseModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\DatadaseModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DatadaseModel.edmx</DependentUpon>
+      <LastGenOutput>DatadaseModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\DatadaseModel.edmx.diagram">
+      <DependentUpon>DatadaseModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\DatadaseModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DatadaseModel.edmx</DependentUpon>
+      <LastGenOutput>DatadaseModel.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -189,7 +243,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -225,6 +281,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
