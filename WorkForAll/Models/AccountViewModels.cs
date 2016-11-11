@@ -31,8 +31,8 @@ namespace WorkForAll.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
+        [Display(Name = "E-mail")]
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -68,11 +68,13 @@ namespace WorkForAll.Models
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [RegularExpression("^.*(?=.{6,})(?=.*[a-zA-Z])[a-zA-Z0-9]+$", ErrorMessage="Password should contain upper and lower case letters and numbers")]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
+        [RegularExpression("^.*(?=.{6,})(?=.*[a-zA-Z])[a-zA-Z0-9]+$")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }

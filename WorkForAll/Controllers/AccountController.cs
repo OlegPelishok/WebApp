@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using WorkForAll.Models;
+using System.Text.RegularExpressions;
 
 namespace WorkForAll.Controllers
 {
@@ -41,11 +42,50 @@ namespace WorkForAll.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model)
+        //public void Login(LoginViewModel model, string returnUrl)
         {
+            bool OK = false;
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
+                WebSQLEntities db = new WebSQLEntities();
+                var user = new User();
+                //List<User> userList = new List<User>();
+                var allUsers = db.User.ToList();
+                var mail = model.Email;
+                var pass = model.Password;
+                foreach (var us in allUsers)
+                {
+                    string userMail = (Regex.Replace(us.e_mail, @" ", ""));
+                    string userPass = (Regex.Replace(us.password, @" ", ""));
+
+                    if (userMail.Equals(mail) && userPass.Equals(pass))
+                    {
+                        OK = true;
+                        break;
+                    }
+                    else
+                    {
+                        OK = false;
+                    }
+
+                }
+            }
+
+
+                if (OK == true)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return View(model);
+                }
+
+                
+                
+
+            /*   var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
@@ -58,8 +98,11 @@ namespace WorkForAll.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(model);*/
+      
+
         }
+
 
         //
         // GET: /Account/Register
